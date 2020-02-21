@@ -7,9 +7,22 @@ def nprint(nested_list):
     print('\n')
 
 
+# Dot product function
+def dot(x1, x2):
+    if len(x1) == len(x2):
+        dproduct = 0
+        for i in range(len(x1)):
+            dproduct += (x1[i] * x2[i])
+
+        return dproduct
+    else:
+        print("vectors are not equal in length")
+
+
+# Matrix product function. Utilizes dot product function.
 def mproduct(A, B):
     a_rows = len(A)
-    b_cols= len(B[0])
+    b_cols = len(B[0])
 
     C = [[0 for cols in range(b_cols)] for rows in range(a_rows)]
 
@@ -22,34 +35,26 @@ def mproduct(A, B):
     return C
 
 
+# transpose a matrix
 def transpose(M):
-   return list(zip(*M))
+    return list(zip(*M))
 
 
-def dot(v1, v2):
-    if len(v1) == len(v2):
-        product = 0
+# element wise sum of two vectors
+def add(z1, z2):
+    if len(z1) == len(z2):
+        sums = []
         for i in range(len(v1)):
-            product += (v1[i] * v2[i])
+            sums.append(z1[i] + z2[i])
 
-        return product
+        return sums
     else:
         print("vectors are not equal in length")
 
 
-def add(v1, v2):
-    if len(v1) == len(v2):
-        sum = []
-        for i in range(len(v1)):
-            sum.append(v1[i] + v2[i])
-
-        return sum
-    else:
-        print("vectors are not equal in length")
-
-
-def subtract(v1, v2):
-    return add(v1, -1*v2)
+# element wise difference of two vectors.
+def subtract(p1, p2):
+    return add(p1, -1*p2)
 
 
 if __name__ == '__main__':
@@ -68,7 +73,6 @@ if __name__ == '__main__':
     print(matrix, '\n')
     print(mT, '\n')
     print(mT2, '\n')
-
 
     print("dot product using numpy and my function: ")
     v1 = np.array([1, 2, 3])
@@ -114,7 +118,6 @@ if __name__ == '__main__':
     # find row and column with highest total sum:
     sums = [row.sum() for row in matrix]
     csums = [col.sum() for col in matrix.transpose()]
-
 
     print("Highest sum of elements in a row occurs in row {}".format(np.argmax(sums)))
     print("Highest sum of elements in a column occurs in column {} \n".format(np.argmax(csums)))

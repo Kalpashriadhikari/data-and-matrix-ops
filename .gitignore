@@ -125,3 +125,13 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+.gitignore
+.idea/.gitignore
+.idea/.name
+.idea/data-and-matrix-ops.iml
+.idea/inspectionProfiles/
+.idea/libraries/
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+matrix_ops.py
