@@ -1,6 +1,5 @@
 import numpy as np
 
-
 def nprint(nested_list):
     for row in nested_list:
         print(' '.join(map(str, row)))
@@ -128,3 +127,7 @@ if __name__ == '__main__':
 
     print(matrix)
     print(data)
+
+    # Matrix Powers
+    msquared = np.power(matrix, 2)
+    print(msquared)
