@@ -39,6 +39,14 @@ def transpose(M):
     return list(zip(*M))
 
 
+def rotate90numpy(M):
+    return M[::-1].transpose()
+
+
+def rotate90builtin(M):
+    rotated = M[::-1]
+    return list(zip(*rotated))
+
 # element wise sum of two vectors
 def add(z1, z2):
     if len(z1) == len(z2):
@@ -130,4 +138,35 @@ if __name__ == '__main__':
 
     # Matrix Powers
     msquared = np.power(matrix, 2)
-    print(msquared)
+    print(msquared, '\n')
+
+    # rotate a square matrix 90 degrees with Numpy made function:
+    M = np.random.randint(1, 10, 9).reshape((3,3))
+    print(M, '\n')
+    print(rotate90numpy(M), '\n')
+
+    R = np.random.randint(1, 10, 16).reshape((4,4))
+    print(R, '\n')
+    print(rotate90numpy(R), '\n')
+
+    R = R.tolist()
+    # rotate a square matrix with function using only built-in list
+    print(rotate90builtin(R), '\n')
+
+    # practice slicing lists
+    list1 = [0,1,2,3,4,5,6,7,8,9]
+
+    print(list1[::2])
+    print(list1[1::2])
+
+    list2 = [[1,2,3], [4,5,6], [7,8,9]]
+
+    # getting columns using built-in lists entails list comprehension:
+    col1 = [row[0] for row in list2]
+    col2 = [row[1] for row in list2]
+
+    # practice slicing with numpy ndarrays
+    list3 = np.array(list2)
+
+    # note that using slicing in numpy returns a view of the original ndarray. Any changes made to the slice
+    # will be reflected in the original. In order to avoid this, try

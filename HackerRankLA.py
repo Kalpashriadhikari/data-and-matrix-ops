@@ -1,4 +1,5 @@
 import numpy as np
+import sympy as sp
 
 # A = np.array([[1,2,3],
 #               [2,3,4],
@@ -64,20 +65,26 @@ import numpy as np
 
 # print(np.linalg.det(A))
 
-# Diagonalize A:
+# Find eigenvalues and vectors using numpy:
 
 A = np.array([[-2, -9],
               [1, 4]])
 
-# step 1. Is it possible? For an nxn matrix, there must be n unique eigenvalues:
 vals, vects = np.linalg.eig(A)
-vals2 = np.linalg.eigvals(A)
+vects = np.real_if_close(vects, tol=1)
+vals = np.real_if_close(vals, tol=1)
 
-#Show 5 distinct eigenvalues
-print("Eigenvalues: ", vals)
-print("linalg.eigvals: ", vals2)
+print("Eigenvalues (linalg.eig): \n", vals, '\n')
+print("Eigenvectors: \n", vects, '\n')
 
-print("Eigenvectors: ", vects)
+# Now try the same thing with sympy:
+
+M = sp.Matrix(A)
+vals2 = M.eigenvals()
+vects2 = M.eigenvects()
+print("Eigenvalues with Sympy: \n {} \n".format(vals2))
+print("Eigenvectors with Sympy: \n {} \n".format(vects2))
+
 
 
 
