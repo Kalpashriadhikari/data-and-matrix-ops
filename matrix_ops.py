@@ -180,4 +180,25 @@ if __name__ == '__main__':
     # ***NOTE*** that using slicing in numpy returns a view of the original ndarray. Any changes made to the slice
     # will be reflected in the original. In order to avoid this, you must make a copy.
 
+    # finding eigenvalues and vectors with numpy
+    A = np.array([[-2, -9],
+                  [1, 4]])
+
+    print(A)
+
+    vals, vecs = np.linalg.eig(A)
+    print("numpy eigenvalues: {}".format(vals))
+    print("numpy eigenvects: {} \n".format(vecs))
+
+    A = sp.Matrix(A)
+    print(type(A))
+    vals = A.eigenvals() # dictionary of key value {pairs eigenvalue:algebraic multiplicity}
+    vects = A.eigenvects() # list of tuples of form (egenvalue, algebraic multiplicity, [eigenvectors]
+    print(vals)
+    print(vects)
+
+    print("eigenvector: \n ", vects[0][2])
+
+
+
 
