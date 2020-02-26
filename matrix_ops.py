@@ -1,172 +1,183 @@
 import numpy as np
+import sympy as sp
 
-def nprint(nested_list):
-    for row in nested_list:
-        print(' '.join(map(str, row)))
+
+def mprint(A):
+    for i in A:
+        print(i)
     print('\n')
 
 
-# Dot product function
-def dot(x1, x2):
-    if len(x1) == len(x2):
-        dproduct = 0
-        for i in range(len(x1)):
-            dproduct += (x1[i] * x2[i])
-
-        return dproduct
-    else:
-        print("vectors are not equal in length")
+# Dot product function from scratch
+def dprod(v1, v2):
+    return sum((a * b for a, b in zip(v1, v2)))
 
 
-# Matrix product function. Utilizes dot product function.
-def mproduct(A, B):
-    a_rows = len(A)
-    b_cols = len(B[0])
-
-    C = [[0 for cols in range(b_cols)] for rows in range(a_rows)]
-
-    for i in range(a_rows):
-        for j in range(b_cols):
-            a_row = A[i]
-            b_col = [row[j] for row in B]
-            C[i][j] = dot(a_row, b_col)
-
-    return C
+# Write a function to do matrix vector multiplication from scratch:
+def mvprod(M, v):
+    result = []
+    for row in M:
+        element = sum((a * b for a, b in zip(row, v)))
+        result.append(element)
+    return result
 
 
-# transpose a matrix
+# Write a function that multiplies matrices
+def mprod(M, N):
+    mrows = len(M)
+    ncols = len(N[0])
+    result = [[] for i in range(mrows)]
+
+    for i in range(mrows):
+        for j in range(ncols):
+            row = M[i]
+            col = [nrow[j] for nrow in N]
+            element = sum((r * c for r, c in zip(row, col)))
+            result[i].append(element)
+    return result
+
+
+# transpose a matrix:
 def transpose(M):
-    return list(zip(*M))
+    cols = len(M[0])
+    result = []
+    for i in range(cols):
+        tcol = [row[i] for row in M]
+        result.append(tcol)
+    return result
 
 
-def rotate90numpy(M):
-    return M[::-1].transpose()
+# Rotate a matrix 90 degrees clockwise (using numpy)
+def rot90cw(M):
+    nM = np.array(M)
+    return np.flip(nM, 0).T
 
 
-def rotate90builtin(M):
-    rotated = M[::-1]
-    return list(zip(*rotated))
+# Rotate a matrix 90 degrees ccw
+def rot90ccw(M):
+    numcols = len(M[0])
+    temp = []
+    final = []
+
+    for i in range(numcols):
+        temp.append([row[i] for row in M])
+
+    numrows = len(temp)
+
+    for j in range(numrows):
+        final.append(temp[numrows - 1 - j])
+
+    return final
+
 
 # element wise sum of two vectors
-def add(z1, z2):
-    if len(z1) == len(z2):
-        sums = []
-        for i in range(len(v1)):
-            sums.append(z1[i] + z2[i])
-
-        return sums
-    else:
-        print("vectors are not equal in length")
 
 
 # element wise difference of two vectors.
-def subtract(p1, p2):
-    return add(p1, -1*p2)
 
 
 if __name__ == '__main__':
-
     # create a new ndarray from a nested list
-    matrix: np.ndarray = np.array([[1, 2, 3],
-                                   [3, 5, 7],
-                                   [7, 5, 3],
-                                   [1, 2, 3]])
+    A = [[1, 2, 3],
+         [2, 4, 6],
+         [1, 1, 1]]
 
-    print("Transpose with numpy and my function:")
-    mT = matrix.transpose()
-    mT2 = transpose(matrix)
+    B = [[1, 2],
+         [1, 1],
+         [1, 3]]
 
-    # print results of numpy and home-made transpose
-    print(matrix, '\n')
-    print(mT, '\n')
-    print(mT2, '\n')
+    x = [1, 2]
+    y = [1, 2, 3]
+    z = [1, 1, 1]
 
     print("dot product using numpy and my function: ")
-    v1 = np.array([1, 2, 3])
-    v2 = np.array([3, 5, 7])
+    print(dprod(y, z))
+    print(np.dot(y, z), '\n')
 
-    # dot product numpy method:
-    product = np.dot(v1, v2)
+    print("Matrix vector multiplication: ")
+    mprint(mvprod(B, x))
+    print(np.array(B) @ np.array(x), '\n')
 
-    # dot product home made method:
-    product2 = dot(v1, v2)
+    print("Matrix multiplication :")
+    mprint(mprod(A, B))
+    print(np.array(A) @ np.array(B), '\n')
 
-    # print results
-    print(product)
-    print(product2, '\n')
+    print("Transpose with numpy and my function:")
+    mprint(transpose(B))
+    print(np.transpose(np.array(B)), '\n')
 
-    print("sums: ")
-    print(v1 + v2)
-    print(add(v1, v2), '\n')
+    print("rotate matrix 90 degrees clockwise: ")
+    mprint(B)
+    mprint(rot90cw(B))
 
-    print("differences")
-    print(v1 - v2)
-    print(subtract(v1, v2), '\n')
+    # counter clock-wise
+    print("rotate matrix 90 degrees counter-clockwise: ")
+    mprint(B)
+    mprint(rot90ccw(B))
 
-    print("Matrix multiplication with numpy built-in and my own function:")
-    C = mproduct(matrix, mT)
-    nprint(C)
-    print(matrix @ mT)
+    # matrix creation with numpy (random, zeros, ones, reshape)
+    print("practice with ndarray creation using random, zeros, ones and reshape")
+    C = np.random.randint(1, 3, 4).reshape(2, 2)
+    mprint(C)
+    D = np.zeros((4, 4))
+    mprint(D)
 
-    # matrix creation
-    mzeros = np.zeros((3, 4))
-    print(mzeros, '\n')
+    # show that numpy.reshape and ndarray.reshape both return reshaped references to the original object, not a copy.
+    E = D.reshape((2, 8))
+    print(E, '\n')
+    E[0, 0] = 1
+    print(E, '\n')
+    print(D, '\n')
 
-    mones = np.ones((3, 4))
-    print(mones, '\n')
-
-    mrand = np.random.random((3, 3))
-    print(mrand, '\n')
+    F = np.reshape(E, (2, 8))
+    print(F, '\n')
+    F[0, 0] = 2
+    print(D, '\n')
 
     # finding maximum and minimum elements:
-    print("Maximum element: {} ".format(matrix.max()))
-    print("Minimum element: {} ".format(matrix.min()))
+    X = np.random.randint(1, 11, 25).reshape(5, 5)
+    print(X)
 
-    # find row and column with highest total sum:
-    sums = [row.sum() for row in matrix]
-    csums = [col.sum() for col in matrix.transpose()]
+    print("The maximum value of any element in X is {}, and occurs at index {}.".format(np.max(X), np.argmax(X)))
 
-    print("Highest sum of elements in a row occurs in row {}".format(np.argmax(sums)))
-    print("Highest sum of elements in a column occurs in column {} \n".format(np.argmax(csums)))
+    print("find the maximum sum along rows and columns")
+    rowsums = np.array([sum(row) for row in X])
+    colsums = np.array([sum(X[:, i]) for i in range(len(X[0]))])
+    print("max row sum: {}".format(np.max(rowsums)))
+    print("max col sum: {} \n".format(np.max(colsums)))
 
-    # append sums of rows and columns to ndarray:
-    insert_before = len(matrix)
-    data = np.insert(matrix, insert_before, csums, axis=0)
+    print("practice appending rows and columns, using the sums above")
+    print(X.shape)
+    print(colsums.shape)
+    print(rowsums.shape)
 
-    print(matrix)
-    print(data)
+    colsums = colsums.reshape(1, 5)
+    rowsums = rowsums.reshape(5, 1)
+
+    # all_data = np.append(X, rowsums, axis=1)
+    all_data = np.append(X, colsums, axis=0)
+
+    print("X with sums appended as an additional row or column:")
+    print(all_data, '\n')
 
     # Matrix Powers
-    msquared = np.power(matrix, 2)
-    print(msquared, '\n')
+    print("X^2= \n", np.linalg.matrix_power(X, 2), '\n')
 
-    # rotate a square matrix 90 degrees with Numpy made function:
-    M = np.random.randint(1, 10, 9).reshape((3,3))
-    print(M, '\n')
-    print(rotate90numpy(M), '\n')
+    # practice slicing lists (1-D) (works the same for Numpy ndarrays)
+    list1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    sublist = list1[0:5]
 
-    R = np.random.randint(1, 10, 16).reshape((4,4))
-    print(R, '\n')
-    print(rotate90numpy(R), '\n')
+    # slicing lists in 2-D (must use list comprehension, as 2-D slicing is unavailable for lists)
+    list2 = [list1, list1, list1]
+    list3 = [row[0:3] for row in list2]
+    print(list3, '\n')
 
-    R = R.tolist()
-    # rotate a square matrix with function using only built-in list
-    print(rotate90builtin(R), '\n')
+    # practice slicing 2-D with Numpy ndarrays (recreate list3 but with better slicing capabilities)
+    list4 = np.array(list2)
+    list3 = list4[0:2, 0:3]
+    print(list3, '\n')
 
-    # practice slicing lists
-    list1 = [0,1,2,3,4,5,6,7,8,9]
+    # ***NOTE*** that using slicing in numpy returns a view of the original ndarray. Any changes made to the slice
+    # will be reflected in the original. In order to avoid this, you must make a copy.
 
-    print(list1[::2])
-    print(list1[1::2])
 
-    list2 = [[1,2,3], [4,5,6], [7,8,9]]
-
-    # getting columns using built-in lists entails list comprehension:
-    col1 = [row[0] for row in list2]
-    col2 = [row[1] for row in list2]
-
-    # practice slicing with numpy ndarrays
-    list3 = np.array(list2)
-
-    # note that using slicing in numpy returns a view of the original ndarray. Any changes made to the slice
-    # will be reflected in the original. In order to avoid this, try

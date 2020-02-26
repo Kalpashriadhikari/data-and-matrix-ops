@@ -1,5 +1,5 @@
 import numpy as np
-
+import sympy as sp
 
 def mprint(A):
     for i in A:
@@ -7,12 +7,12 @@ def mprint(A):
     print('\n')
 
 
-# Dot product function
+# Dot product function from scratch
 def dprod(v1, v2):
    return sum((a*b for a, b in zip(v1, v2)))
 
 
-# Write a function to do matrix vector multiplication:
+# Write a function to do matrix vector multiplication from scratch:
 def mvprod(M, v):
     result = []
     for row in M:
@@ -43,7 +43,7 @@ def transpose(M):
         result.append(tcol)
     return result
 
-# Rotate a matrix 90 degrees clockwise
+# Rotate a matrix 90 degrees clockwise (using numpy)
 def rot90cw(M):
     nM = np.array(M)
     return np.flip(nM, 0).T
@@ -102,7 +102,7 @@ if __name__ == '__main__':
 
     print("Transpose with numpy and my function:")
     mprint(transpose(B))
-    print (np.transpose(np.array(B)), '\n')
+    print(np.transpose(np.array(B)), '\n')
 
     print("rotate matrix 90 degrees clockwise: ")
     mprint(B)
@@ -113,34 +113,73 @@ if __name__ == '__main__':
     mprint(B)
     mprint(rot90ccw(B))
 
-
-    # print("sums two matrices: ")
-
-
-    # print("differences")
-
-
     # matrix creation with numpy (random, zeros, ones, reshape)
+    print("practice with ndarray creation using random, zeros, ones and reshape")
+    C = np.random.randint(1,3,4).reshape(2,2)
+    mprint(C)
+    D = np.zeros((4,4))
+    mprint(D)
 
+
+    # show that numpy.reshape and ndarray.reshape both return reshaped references to the original object, not a copy.
+    E = D.reshape((2, 8))
+    print(E, '\n')
+    E[0,0] = 1
+    print(E, '\n')
+    print(D, '\n')
+
+    F = np.reshape(E, (2,8))
+    print(F, '\n')
+    F[0,0] = 2
+    print(D, '\n')
 
     # finding maximum and minimum elements:
+    X = np.random.randint(1, 11, 25).reshape(5,5)
+    print(X)
+
+    print("The maximum value of any element in X is {}, and occurs at index {}.".format(np.max(X), np.argmax(X)))
 
 
-    # find row and column with highest total sum:
+    print("find the maximum sum along rows and columns")
+    rowsums = np.array([sum(row) for row in X])
+    colsums = np.array([sum(X[:,i]) for i in range(len(X[0]))])
+    print("max row sum: {}".format(np.max(rowsums)))
+    print("max col sum: {} \n".format(np.max(colsums)))
 
+    print("practice appending rows and columns, using the sums above")
+    print(X.shape)
+    print(colsums.shape)
+    print(rowsums.shape)
 
-    # append sums of rows and columns to ndarray:
+    colsums = colsums.reshape(1, 5)
+    rowsums = rowsums.reshape(5, 1)
+
+    # all_data = np.append(X, rowsums, axis=1)
+    all_data = np.append(X, colsums, axis=0)
+
+    print("X with sums appended as an additional row or column:")
+    print(all_data, '\n')
 
 
     # Matrix Powers
+    print("X^2= \n", np.linalg.matrix_power(X, 2), '\n')
 
 
-    # practice slicing lists and ndarrays (1-D)
+    # practice slicing lists (1-D) (works the same for Numpy ndarrays)
     list1 = [0,1,2,3,4,5,6,7,8,9]
+    sublist = list1[0:5]
+
+    #slicing lists in 2-D (must use list comprehension, as 2-D slicing is unavailable for lists)
+    list2 = [list1, list1, list1]
+    list3 = [row[0:3] for row in list2]
+    print(list3, '\n')
+
+    # practice slicing 2-D with Numpy ndarrays (recreate list3 but with better slicing capabilities)
+    list4 = np.array(list2)
+    list3 = list4[0:2, 0:3]
+    print(list3, '\n')
+
+    # ***NOTE*** that using slicing in numpy returns a view of the original ndarray. Any changes made to the slice
+    # will be reflected in the original. In order to avoid this, you must make a copy.
 
 
-    #practice slicing 2-D (ndarray AND python list)
-
-
-    # note that using slicing in numpy returns a view of the original ndarray. Any changes made to the slice
-    # will be reflected in the original. In order to avoid this, try
