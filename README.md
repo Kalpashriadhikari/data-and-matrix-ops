@@ -1,6 +1,9 @@
 # data-and-matrix-ops
-Simple exercises to practice matrix operations and data manipulation with home-made functions, numpy and pandas... 
+Exercises to practice matrix operations and data manipulation with home-made functions, numpy and pandas. Some focus
+points include:
 
-Many exercises come from HackerRank.com
+- Principle Component Analysis
+- Matrix manipulation in Numpy and Sympy (Diagonalization, Multiplication, etc.)
+- Solutions to HackerRank linear algebra problems
 
-purpose: prep for data science and machine learning concepts
+purpose: Learn data science and machine learning concepts
